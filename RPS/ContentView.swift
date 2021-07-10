@@ -16,32 +16,48 @@ struct ContentView: View {
     }
     
     var gameMoves: [GameMove] = [.rock, .paper, .scissors]
-    var userMove: GameMove
+    var userMove: GameMove = .rock
     
     @State private var appChooses = Int.random(in: 0 ..< 3)
     @State private var shouldWin = Bool.random()
     @State private var score: Int = 0
     
     var body: some View {
-        VStack(spacing: 30 ) {
-            
-            Text("Score: \(score)")
-            
-            Text("\(gameMoves[appChooses].rawValue.capitalized)")
+        ZStack {
+            LinearGradient(gradient: Gradient(colors: [.purple, .black]), startPoint: .top, endPoint: .bottom).edgesIgnoringSafeArea(.all)
+            VStack(spacing: 30 ) {
+                
+                Text("\(score)")
+                    .font(.largeTitle)
+                    .fontWeight(.black)
+                    .foregroundColor(.yellow)
+                
+                Text("\(gameMoves[appChooses].rawValue.capitalized)")
+                    .font(.title)
+                    .fontWeight(.medium)
+                    .foregroundColor(.yellow)
 
-            shouldWin ? Text("Try to Win") : Text("Try to Lose")
-            
-            HStack {
-                ForEach(0 ..< 3) { number in
-                    Button(action: {
-                        self.answerTapped(computerMove: gameMoves[appChooses], userMove: userMove)
-                    }) {
-                        Text("\(gameMoves[number].rawValue.capitalized)")
+                shouldWin ? Text("Try to Win").font(.title).foregroundColor(.yellow) : Text("Try to Lose").font(.title).foregroundColor(.yellow)
+                    
+                
+                    VStack {
+                    ForEach(0 ..< 3) { number in
+                        Button(action: {
+                            self.answerTapped(computerMove: gameMoves[appChooses], userMove: gameMoves[number])
+                            self.newGame()
+                        }) {
+                            Text("\(gameMoves[number].rawValue.capitalized)")
+                                .padding()
+                                .background(Color.yellow)
+                                .foregroundColor(.black)
+                                .font(.title)
+                                .clipShape(Capsule())
                         }
                     }
                 }
             }
         }
+    }
     func answerTapped(computerMove: GameMove, userMove: GameMove) {
 
         print("should win? \(shouldWin)")
@@ -68,9 +84,14 @@ struct ContentView: View {
             }
         }
     }
+    
+    func newGame() {
+        self.shouldWin = Bool.random()
+        self.appChooses = Int.random(in: 0 ..< 3)
+    }
         //        switch userMove, computerMove {
         //        }
-    }
+}
 //}
 
 struct ContentView_Previews: PreviewProvider {
