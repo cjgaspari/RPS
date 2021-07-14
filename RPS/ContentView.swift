@@ -3,7 +3,7 @@
 //  RPS
 //
 //  Created by Trevor Maltbie on 7/4/21.
-//
+//  Forked by CJ Gaspari
 
 import SwiftUI
 
@@ -24,23 +24,35 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            LinearGradient(gradient: Gradient(colors: [.purple, .black]), startPoint: .top, endPoint: .bottom).edgesIgnoringSafeArea(.all)
+            LinearGradient(gradient: Gradient(colors: [.black, .purple]), startPoint: .top, endPoint: .bottom).edgesIgnoringSafeArea(.all)
             VStack(spacing: 30 ) {
                 
-                Text("\(score)")
+                Text("Score: \(score)")
                     .font(.largeTitle)
                     .fontWeight(.black)
                     .foregroundColor(.yellow)
-                
-                Text("\(gameMoves[appChooses].rawValue.capitalized)")
+                Spacer()
+                Text("Computer Move: \(gameMoves[appChooses].rawValue.capitalized)")
                     .font(.title)
                     .fontWeight(.medium)
                     .foregroundColor(.yellow)
-
-                shouldWin ? Text("Try to Win").font(.title).foregroundColor(.yellow) : Text("Try to Lose").font(.title).foregroundColor(.yellow)
-                    
-                
-                    VStack {
+                Spacer()
+                HStack {
+                    Text("Goal:")
+                        .font(.title)
+                        .fontWeight(.medium)
+                        .foregroundColor(.yellow)
+                    shouldWin ?
+                        Text("Try to Win")
+                        .font(.title)
+                        .foregroundColor(.yellow)
+                        :
+                        Text("Try to Lose")
+                        .font(.title)
+                        .foregroundColor(.yellow)
+                }
+                Spacer()
+                VStack {
                     ForEach(0 ..< 3) { number in
                         Button(action: {
                             self.answerTapped(computerMove: gameMoves[appChooses], userMove: gameMoves[number])
@@ -89,10 +101,8 @@ struct ContentView: View {
         self.shouldWin = Bool.random()
         self.appChooses = Int.random(in: 0 ..< 3)
     }
-        //        switch userMove, computerMove {
-        //        }
 }
-//}
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
